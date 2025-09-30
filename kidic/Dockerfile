@@ -6,9 +6,6 @@ WORKDIR /app
 # Copy everything from the kidic folder
 COPY . .
 
-# Go inside the kidic folder where gradlew is
-WORKDIR /app
-
 # Make gradlew executable
 RUN chmod +x ./gradlew
 
