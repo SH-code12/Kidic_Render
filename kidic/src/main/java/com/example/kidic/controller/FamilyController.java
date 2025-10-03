@@ -16,35 +16,23 @@ import java.util.List;
 @RestController
 @RequestMapping("api/family")
 public class FamilyController {
-
     @Autowired
     private FamilyService familyService;
-
-    // ✅ This endpoint is now SAFE without Authorization
     @GetMapping
-    public ResponseEntity<?> getFamily(
-            @RequestHeader(value = "Authorization", required = false) String authHeader
-    ) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.ok("Family API is running ✅ (no token provided)");
-        }
+    public ResponseEntity<FamilyResponseDTO> getFamily
+            (@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         return ResponseEntity.ok(familyService.getFamily(token));
     }
-
-    // 🚨 These still require token (you can make them optional too if you want)
     @GetMapping("parents")
-    public ResponseEntity<List<ParentResponseDTO>> getFamilyParents(
-            @RequestHeader("Authorization") String authHeader
-    ) {
+    public ResponseEntity<List<ParentResponseDTO>> getFamilyParents
+            (@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         return ResponseEntity.ok(familyService.getFamilyParents(token));
     }
-
     @GetMapping("children")
-    public ResponseEntity<List<ChildResponseDTO>> getFamilyChildren(
-            @RequestHeader("Authorization") String authHeader
-    ) {
+    public ResponseEntity<List<ChildResponseDTO>> getFamilyChildren
+            (@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         return ResponseEntity.ok(familyService.getFamilyChildren(token));
     }
