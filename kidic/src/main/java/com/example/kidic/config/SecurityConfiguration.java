@@ -17,29 +17,39 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthFilter jwtAuthFilter;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
-
-                // Authorization rules
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/test/**", "/actuator/**","/api/review/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .cors(cors->{})
-                // Stateless sessions
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
-                // Register custom AuthenticationProvider
-                .authenticationProvider(authenticationProvider)
-
-                // Add JWT filter before UsernamePasswordAuthenticationFilter
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-
-                .build();
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> {})
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()  //  Allow everything
+            )
+            .build();
     }
+
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    //     return http
+    //             .csrf(csrf -> csrf.disable())
+
+    //             // Authorization rules
+    //             .authorizeHttpRequests(auth -> auth
+    //                     .requestMatchers("/api/auth/**", "/api/test/**", "/actuator/**","/api/review/**").permitAll()
+    //                     .anyRequest().authenticated()
+    //             )
+    //             .cors(cors->{})
+    //             // Stateless sessions
+    //             .sessionManagement(session -> session
+    //                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    //             )
+
+    //             // Register custom AuthenticationProvider
+    //             .authenticationProvider(authenticationProvider)
+
+    //             // Add JWT filter before UsernamePasswordAuthenticationFilter
+    //             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
+    //             .build();
+    // }
 }
